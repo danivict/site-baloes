@@ -1,4 +1,4 @@
-## Caso o Tailwind não ser reconhecido, execute:
+## Caso o Tailwind não seja reconhecido, execute:
 
 npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
