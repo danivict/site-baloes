@@ -1,11 +1,10 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
 import iconColor from './assets/icon_colorFilter.svg'
 import iconEffects from './assets/icon_magicStar.svg'
 import ballon from './assets/ballon.svg'
 import close from './assets/close.svg'
 import menuHamburger from './assets/menu_hamburger.svg'
+import { connect, publish, getBaloonQuantity } from './baloons.service';
 
 function Ballon({ id }) {
   return (
@@ -19,9 +18,15 @@ function Ballon({ id }) {
     </div>
   )
 }
+function Spinner() {
+  return (
+    <div className="loader"></div>
+  );
+}
 
 function App() {
   const [isActive, setIsActive] = useState(false);
+  const [baloonQuantity, setBaloonQuantity] = useState(null);
 
   function handleClickToggleMenu() {
     setIsActive(!isActive);
@@ -31,9 +36,11 @@ function App() {
     // console.log(document.body.classList);
   }
 
-  const itensMenu = ['Cores', 'Efeitos'];
-  const images = [iconColor, iconEffects];
-  const quantBallons = 4;
+
+  useEffect(() => {
+    connect();
+    getBaloonQuantity(setBaloonQuantity);
+  }, [setBaloonQuantity]);
 
   return (
     <div className="h-screen grid grid-cols-3 max-sm:grid-cols-1 transition">
@@ -42,18 +49,33 @@ function App() {
       <div className='col-span-2 flex flex-col  gap-10 justify-center items-center'>
         <h1 className='text-3xl max-xs:py-10'>Balões</h1>
         <div className='flex flex-wrap justify-center items-center gap-10'>
-          {Array(quantBallons).fill(true).map((_, i) => <Ballon key={i} id={i + 1} />)}
+          {
+            baloonQuantity ?  Array(baloonQuantity).fill(true).map((_, i) => <Ballon key={i} id={i + 1} />) : <Spinner/>
+          }
         </div>
       </div>
-      <div className={`${isActive ? 'max-sm:-right-0' : null} bg-black col-span-1 flex justify-center items-center 
+      <div className={`${isActive ? 'max-sm:right-0' : null} bg-black col-span-1 flex justify-center items-center 
       max-sm:fixed max-sm:-right-60 max-sm:h-screen transition-all`}>
         <ul className='p-10 rounded-md flex flex-col gap-4 justify-center items-center'>
-          {itensMenu.map((item, i) => {
-            return <li key={item}
-              className='text-white text-3xl bg-zinc-900 transition cursor-pointer rounded-md py-2 px-3 border border-transparent whitespace-nowrap 
-            hover:border-b hover:border-r hover:border-b-white hover:border-r-white'>
-              {<img className='w-6 inline-block' src={images[i]} />} {item}</li>
-          })}
+          <li key='Cores'
+            className='text-white text-3xl bg-zinc-900 transition cursor-pointer rounded-md py-2 px-3 border border-transparent whitespace-nowrap 
+            hover:border-b hover:border-r hover:border-b-white hover:border-r-white'
+          >
+            {/* //TODO: ao clicar aqui abrir o selecionador de cores e mudar a pre visualizaçao dos baloes */}
+            <img className='w-6 inline-block' src={iconColor} />
+            Cores
+          </li>
+
+          <li key='Efeitos'
+            className='text-white text-3xl bg-zinc-900 transition cursor-pointer rounded-md py-2 px-3 border border-transparent whitespace-nowrap 
+            hover:border-b hover:border-r hover:border-b-white hover:border-r-white'
+            onClick={() => { publish({ message: "OIiiii" }) }}
+          >
+            {/* //TODO: ao clicar aqui abrir o selecionador de efeitos e mudar a pre visualizaçao dos baloes */}
+            <img className='w-6 inline-block' src={iconEffects} />
+            Efeitos
+          </li>
+
         </ul>
       </div>
     </div>
