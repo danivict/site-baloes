@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import ballon from './assets/ballon.svg'
 import close from './assets/close.svg'
 import menuHamburger from './assets/menu_hamburger.svg'
-import { connect, publish, getBaloonQuantity } from './baloons.service';
+import { connect, getBaloonQuantity, getBaloonEffect, publishBaloonEffect } from './baloons.service';
+import { dynamicsEffects, staticEffects } from './effects';
 
 function Ballon({ id }) {
   return (
@@ -24,30 +25,9 @@ function Spinner() {
 
 function App() {
   const [isActive, setIsActive] = useState(false);
-  const [baloonQuantity, setBaloonQuantity] = useState(4);
-  const StaticEffects = {
-    "desligado": "11",
-    "vermelho": "1",
-    "verde": "2",
-    "azul": "3",
-    "branco": "4",
-    "verde": "5",
-    "rosa": "6",
-    "ciano": "7",
-    "roxo": "8",
-    "amarelo": "9",
-    "laranja": "10",
-  };
-  const DynamicsEffects = {
-    "flashes": "12",
-    "pulso em StandBy": "13",
-    "fade em StandBy": "14",
-    "fogo": "15",
-    "chuva": "16",
-    "quente": "17",
-    "frio": "18",
-    "efeitos aleatorios": "19"
-  }
+  const [baloonQuantity, setBaloonQuantity] = useState(null);
+  const [baloonEffect, setBaloonEffect] = useState(null);
+
 
   function handleClickToggleMenu() {
     setIsActive(!isActive);
@@ -57,11 +37,22 @@ function App() {
     // console.log(document.body.classList);
   }
 
+  useEffect(()=>{
+    connect();
+  },[]);
+
 
   useEffect(() => {
-    connect();
     getBaloonQuantity(setBaloonQuantity);
   }, [setBaloonQuantity]);
+
+  useEffect(()=>{
+    getBaloonEffect(setBaloonEffect);
+    if (!baloonEffect) {
+      publishBaloonEffect("1");
+    }
+  }, [setBaloonEffect, baloonEffect]);
+
 
   return (
     <>
@@ -79,51 +70,33 @@ function App() {
         </div>
         <div className={`${isActive ? 'max-sm:-right-px' : ''} bg-black col-span-1 flex justify-center items-start 
       max-sm:fixed max-sm:-right-full max-sm:h-screen transition-all`}>
-          {/* <ul className='p-10 rounded-md flex flex-col gap-4 justify-center items-center'>
-            <li key='Cores'
-              className='text-white text-3xl bg-zinc-900 transition cursor-pointer rounded-md py-2 px-3 border border-transparent whitespace-nowrap 
-            hover:border-b hover:border-r hover:border-b-white hover:border-r-white'
-            >
-              <img className='w-6 inline-block' src={iconColor} />
-              Cores
-            </li>
-
-            <li key='Efeitos' onClick={() => { setOpen(!open) }}
-              className='text-white text-3xl bg-zinc-900 transition cursor-pointer rounded-md py-2 px-3 border border-transparent whitespace-nowrap 
-              hover:border-b hover:border-r hover:border-b-white hover:border-r-white'
-
-            >
-              <img className='w-6 inline-block' src={iconEffects} />
-              Efeitos
-            </li>
-
-          </ul> */}
-          {/* //TODO: ao clicar aqui abrir o selecionador de cores e mudar a pre visualizaçao dos baloes */}
-          {/* //TODO: ao clicar aqui abrir o selecionador de efeitos e mudar a pre visualizaçao dos baloes */}
-
 
           <form action="" //Menu de seleção de efeito
             className='flex flex-col justify-center items-center'>
             <div className='mt-6 px-6 max-sm:mt-28'>
-              <label for="cars" className='text-white'>Escolha um efeito: </label>
-              <select className='bg-white' id="cars">
+              <label htmlFor="cars" className='text-white'>Escolha um efeito: </label>
+              <select className='bg-white' id="cars" value={baloonEffect || "1"}>
                 <optgroup label="Estático" >
-                  {Object.entries(StaticEffects).map(([effect, val], i) => (
-                    <option className='' value={val}>{effect}</option>
+                  {Object.entries(staticEffects).map(([val, effect]) => (
+                    <option key={val} value={val}>{effect}</option>
                   ))}
                 </optgroup>
                 <optgroup label="Dinâmico">
-                  {Object.entries(DynamicsEffects).map(([effect, val], i) => (
-                    <option value={val}>{effect}</option>
+                  {Object.entries(dynamicsEffects).map(([val, effect]) => (
+                    <option key={val} value={val}>{effect}</option>
                   ))}
                 </optgroup>
               </select>
             </div>
             <div>
-              <button type='submit' onClick={(e) => { e.preventDefault() }}
+              <button type='submit' onClick={(e) => { 
+                e.preventDefault();
+                publishBaloonEffect(e.target.value);
+              }}
                 className='bg-white px-2 py-1 mt-4 rounded'>Salvar</button>
             </div>
           </form>
+
         </div>
       </div>
     </>
