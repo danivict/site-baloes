@@ -7,13 +7,5 @@ export default defineConfig({
   server: {
     host: true,
     port: 1883,
-  },
-  resolve: {
-    alias: {
-      process: "process/browser",
-      stream: "stream-browserify",
-      zlib: "browserify-zlib",
-      util: 'util'
-    }
   }
 })
