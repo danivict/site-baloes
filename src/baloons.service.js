@@ -1,27 +1,29 @@
 
 import axios from 'axios';
+import { baloons } from './assets/mock';
 
-export async function getBalloonQuantity() {
-    const url = `${import.meta.env.VITE_BACKEND_URL}/balloons/qnt`
+export async function getBalloonsInfo() {
+    // const url = `${import.meta.env.VITE_BACKEND_URL}/balloons`
 
-    const {data} = await axios.get(url)
-    return data
+    // const { data } = await axios.get(url)
+    return baloons
 }
 
-export async function getBalloonEffect() {
-    const url = `${import.meta.env.VITE_BACKEND_URL}/balloons/effect`
-
-    const {data} = await axios.get(url)
-    console.log(data)
-    return data
+export async function updateBaloonEffect(id, effect) {
+    // const url = `${import.meta.env.VITE_BACKEND_URL}/balloons/${id}/effect`
+    // await axios.put(url, effect, {
+        // headers: {
+            // 'Content-Type': 'text/plain'
+        // }
+    // })
 }
 
-export async function updateBaloonEffect(effect) {
-    const url = `${import.meta.env.VITE_BACKEND_URL}/balloons/effect`
-    console.log(effect)
-    await axios.put(url, effect, {
-        headers: {
-            'Content-Type': 'text/plain'
-        }
-    })
+
+export async function updateAllBaloonsEffect(effect) {
+    // const url = `${import.meta.env.VITE_BACKEND_URL}/balloons/${id}/effect`
+    // await axios.put(url, effect, {
+        // headers: {
+            // 'Content-Type': 'text/plain'
+        // }
+    // })
 }
