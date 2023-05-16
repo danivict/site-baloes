@@ -1,19 +1,25 @@
 import { useCallback, useEffect, useState } from 'react'
+import {IconContext} from 'react-icons'
+import {BsBalloon} from 'react-icons/bs'
 import ballon from './assets/ballon.svg'
 import close from './assets/close.svg'
 import menuHamburger from './assets/menu_hamburger.svg'
-import { dynamicsEffects, staticEffects } from './effects';
+import { dynamicsEffects, staticEffects, staticEffectsNames } from './effects';
 import { getBalloonEffect, getBalloonQuantity, updateBaloonEffect } from './baloons.service';
 
-function Ballon({ id }) {
+function Ballon({ id, color }) {
   return (
     <div className='flex flex-col justify-center items-center cursor-pointer p-6 transition rounded-md border border-transparent 
-    hover:border-b hover:border-r hover:border-b-black hover:border-r-black'>
-      <div className='relative flex justify-center items-center'>
-        <img src={ballon} />
-        <p className='absolute'>{id}</p>
+    hover:shadow-lg'>
+      <div className='relative flex flex-col justify-center items-center'>
+        <p className='mb-4'>{id}</p>
+        <IconContext.Provider value={{ color: color, size: "5rem", className: `global-class-name drop-shadow-[0_0px_10px_${color}]` }}>
+          <div>
+            <BsBalloon/>
+          </div>
+        </IconContext.Provider>
       </div>
-      <p className='mt-4'>Status</p>
+      <p className='mt-4'>Status </p>
     </div>
   )
 }
@@ -60,9 +66,9 @@ function App() {
         <div onClick={handleClickToggleMenu} className={`${isActive ? null : 'hidden'} transition sm:hidden fixed right-10 top-10 cursor-pointer invert z-10`}><img src={close} /></div>
         <div className='col-span-2 flex flex-col  gap-10 justify-center items-center'>
           <h1 className='text-3xl max-xs:py-10'>Balões</h1>
-          <div className='flex flex-wrap justify-center items-center gap-10'>
+          <div className='flex flex-wrap justify-center items-center gap-10'> 
             {
-              baloonQuantity ? Array(baloonQuantity).fill(true).map((_, i) => <Ballon key={i} id={i + 1} />) : <Spinner />
+              baloonQuantity ? Array(baloonQuantity).fill(true).map((_, i) => <Ballon key={i} id={i + 1} color={ staticEffectsNames[baloonEffect.toString()] } />) : <Spinner />
             }
           </div>
         </div>
@@ -70,7 +76,7 @@ function App() {
       max-sm:fixed max-sm:-right-full max-sm:h-screen transition-all`}>
 
 
-          <form action="" //Menu de seleção de efeito
+          <form action="" //Menu de seleção de efeito baloonEffect.toString()
             className='flex flex-col justify-center items-center'>
             <div className='mt-6 px-6 max-sm:mt-28'>
               <label htmlFor="cars" className='text-white'>Escolha um efeito: </label>

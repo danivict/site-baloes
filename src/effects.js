@@ -12,6 +12,20 @@ export const staticEffects = {
     "10": "laranja",
 };
 
+export const staticEffectsNames = {
+    "11": "black",
+    "1": "red",
+    "2": "green",
+    "3": "blue",
+    "4": "white",
+    "5": "green",
+    "6": "pink",
+    "7": "cyan",
+    "8": "purple",
+    "9": "yellow",
+    "10": "orange",
+};
+
 export const dynamicsEffects = {
     "12": "flashes",
     "13": "pulso em StandBy",
