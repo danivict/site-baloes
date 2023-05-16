@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import ballon from './assets/ballon.svg'
 import close from './assets/close.svg'
 import menuHamburger from './assets/menu_hamburger.svg'
 import { dynamicsEffects, staticEffects } from './effects';
+import { getBalloonEffect, getBalloonQuantity, updateBaloonEffect } from './baloons.service';
 
 function Ballon({ id }) {
   return (
@@ -26,6 +27,26 @@ function App() {
   const [isActive, setIsActive] = useState(false);
   const [baloonQuantity, setBaloonQuantity] = useState(4);
   const [baloonEffect, setBaloonEffect] = useState(1);
+
+  useEffect(() => {
+    const aux = async () => {
+      setBaloonQuantity(await getBalloonQuantity());
+      setBaloonEffect(await getBalloonEffect());
+    }
+    aux();
+  }, []);
+
+
+  const udpateBaloonEffectOnAPI = useCallback(async (effect) => {
+    console.log("Enviando: "+ effect)
+    await updateBaloonEffect(effect);
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve()
+      }, 500)
+    });
+    setBaloonEffect(await getBalloonEffect());
+  }, [setBaloonEffect]);
 
   function handleClickToggleMenu() {
     setIsActive(!isActive);
@@ -53,7 +74,11 @@ function App() {
             className='flex flex-col justify-center items-center'>
             <div className='mt-6 px-6 max-sm:mt-28'>
               <label htmlFor="cars" className='text-white'>Escolha um efeito: </label>
-              <select className='bg-white' id="cars" value={baloonEffect || "1"}>
+              <select className='bg-white' id="cars" value={baloonEffect || "1"}
+                onChange={(e) => {
+                  setBaloonEffect(e.target.value)
+                }}
+              >
                 <optgroup label="Estático" >
                   {Object.entries(staticEffects).map(([val, effect]) => (
                     <option key={val} value={val}>{effect}</option>
@@ -69,7 +94,7 @@ function App() {
             <div>
               <button type='submit' onClick={(e) => {
                 e.preventDefault();
-                setBaloonEffect(e.target.value);
+                udpateBaloonEffectOnAPI(baloonEffect);
               }}
                 className='bg-white px-2 py-1 mt-4 rounded'>Salvar</button>
             </div>
