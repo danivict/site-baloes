@@ -14,13 +14,15 @@ function Spinner() {
 
 function App() {
   const [isActive, setIsActive] = useState(false);
+  const [baloonEffectSelect, setBaloonEffectSelect] = useState(1);
+
   const [balloons, setBalloons] = useState([]);
 
-  const [baloonEffectSelect, setBaloonEffectSelect] = useState(1);
+
   useEffect(() => {
     const aux = async () => {
       setBalloons(await getBalloonsInfo())
-      //setBaloonQuantity(await getBalloonQuantity());
+      console.log("Aux aqui")
     }
     aux();
   }, []);
@@ -30,15 +32,14 @@ function App() {
     const updatedBalloons = await updateBaloonEffect(id, effect);
     console.log(updatedBalloons)
     setBalloons(updatedBalloons);
-  }, [setBalloons]);
+  }, []);
 
-  const udpateBaloonEffectOnAPI = async () => {
-    console.log("Enviando: " + baloonEffectSelect)
+
+  const updateAllBalloonsEffectOnAPI = useCallback(async (e)=>{
+    e.preventDefault();
     const updatedBalloons = await updateAllBaloonsEffect(baloonEffectSelect);
-    console.log(updatedBalloons)
-
     setBalloons(updatedBalloons);
-  };
+  },[baloonEffectSelect]);
 
   function handleClickToggleMenu() {
     setIsActive(!isActive);
@@ -46,7 +47,11 @@ function App() {
 
   return (
     <>
-
+      {/* <code style={{ whiteSpace: "pre-wrap" }}>
+        {
+          JSON.stringify({balloons, baloonEffectSelect}, null, 2)
+        }
+      </code> */}
       <div className="h-screen grid grid-cols-3 max-sm:grid-cols-1 transition">
         <div onClick={handleClickToggleMenu} className={`${isActive ? 'hidden' : null} transition sm:hidden fixed right-10 top-10 cursor-pointer z-10`}><img src={menuHamburger} /></div>
         <div onClick={handleClickToggleMenu} className={`${isActive ? null : 'hidden'} transition sm:hidden fixed right-10 top-10 cursor-pointer invert z-10`}><img src={close} /></div>
@@ -54,7 +59,9 @@ function App() {
           <h1 className='text-3xl max-xs:py-10'>Balões</h1>
           <div className='flex flex-wrap justify-center items-center gap-10'>
             {
-              balloons.map(x => <Balloon key={x['id']} id={x['id']} effect={x.effect} status={x['status']} battery={x['battery']} updateSingleBalloon={updateSingleBalloonEffectOnAPI} />)
+              balloons.map(x =>
+                <Balloon key={x['id']} id={x['id']} effect={x.effect} status={x['status']} battery={x['battery']} updateSingleBalloon={updateSingleBalloonEffectOnAPI} />
+              )
             }
           </div>
         </div>
@@ -63,7 +70,7 @@ function App() {
 
 
           <form action="" //Menu de seleção de efeito baloonEffect.toString()
-            className='flex flex-col justify-center items-center'>
+            className='flex flex-col justify-center items-center' onSubmit={updateAllBalloonsEffectOnAPI}>
             <div className='mt-6 px-6 max-sm:mt-28'>
               <p className='text-white'>Todos os balões:</p>
               <label htmlFor="" className='text-white'>Escolha um efeito: </label>
@@ -85,10 +92,7 @@ function App() {
               </select>
             </div>
             <div>
-              <button type='submit' onClick={(e) => {
-                e.preventDefault();
-                udpateBaloonEffectOnAPI();
-              }}
+              <button type='submit'
                 className='bg-white px-2 py-1 mt-4 rounded'>Salvar</button>
             </div>
           </form>

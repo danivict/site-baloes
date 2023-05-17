@@ -4,14 +4,13 @@ import Modal from 'react-modal'
 import close from '../assets/close.svg'
 import { useCallback, useEffect, useState } from 'react'
 import { dynamicsEffects, staticEffects, staticEffectsNames } from '../effects';
-import { balloons } from '../assets/mock'
+import { memo } from 'react';
+Modal.setAppElement("body")
 
 function Balloon({ id, effect, status, battery, updateSingleBalloon }) {
     const [toggleModal, setToggleModal] = useState(false);
 
     const [baloonEffectSelect, setBaloonEffectSelect] = useState(effect);
-    const effectToUser = staticEffects[effect]; // 1 : vermelho
-    const effectToDev = (staticEffectsNames[effect]); // 1 : red
 
     function handleClickToggleModal() {
         setToggleModal(!toggleModal);
@@ -19,10 +18,10 @@ function Balloon({ id, effect, status, battery, updateSingleBalloon }) {
 
     return (
         <>
-            <Modal className={`absolute p-8 gap-2 top-10 right-1/2 left-auto bottom-auto translate-x-1/2 translate-y-1/2 rounded shadow-xl border-2 border-${effectToDev}-00
+            <Modal className={`absolute p-8 gap-2 top-10 right-1/2 left-auto bottom-auto translate-x-1/2 translate-y-1/2 rounded shadow-xl border-2 border-${staticEffectsNames[effect]}-00
             bg-white flex flex-row`} isOpen={toggleModal}>
                 <div>
-                    <IconContext.Provider value={{ color: effectToDev, size: "5rem", className: `global-class-name drop-shadow-[0_0px_10px_${effectToDev}]` }}>
+                    <IconContext.Provider value={{ color: staticEffectsNames[baloonEffectSelect], size: "5rem", className: `global-class-name drop-shadow-[0_0px_10px_${staticEffectsNames[baloonEffectSelect]}]` }}>
                         <div>
                             <BsBalloon />
                         </div>
@@ -30,7 +29,7 @@ function Balloon({ id, effect, status, battery, updateSingleBalloon }) {
                 </div>
                 <div>
                     <p>Status: {status}</p>
-                    <p>Efeito: {effectToUser}</p>
+                    <p>Efeito: {staticEffects[effect]}</p>
                     <p>Bateria: {battery + '%'}</p>
                     <form action="" //Menu de seleção de efeito baloonEffect.toString()
                         className=''>
@@ -57,6 +56,7 @@ function Balloon({ id, effect, status, battery, updateSingleBalloon }) {
                             <button type='submit' onClick={async (e) => {
                                 e.preventDefault();
                                 await updateSingleBalloon(id, baloonEffectSelect);
+                                handleClickToggleModal();
                             }}
                                 className='bg-black text-white px-2 py-1 mt-4 rounded'>Salvar</button>
                         </div>
@@ -66,11 +66,15 @@ function Balloon({ id, effect, status, battery, updateSingleBalloon }) {
                 <img className='absolute -top-3 -right-3 w-10 border border-slate-300 bg-slate-200 p-2 rounded-full
                 cursor-pointer' onClick={handleClickToggleModal} src={close} />
             </Modal>
+
+
+
+            
             <div onClick={handleClickToggleModal} className='flex flex-col justify-center items-center cursor-pointer p-6 transition rounded-md border border-transparent 
         hover:shadow-lg'>
                 <div className='relative flex flex-col justify-center items-center'>
                     <p className='mb-4'>{id}</p>
-                    <IconContext.Provider value={{ color: effectToDev, size: "5rem", className: `global-class-name drop-shadow-[0_0px_10px_${effectToDev}]` }}>
+                    <IconContext.Provider value={{ color: staticEffectsNames[effect], size: "5rem", className: `global-class-name drop-shadow-[0_0px_10px_${staticEffectsNames[effect]}]` }}>
                         <div>
                             <BsBalloon />
                         </div>
@@ -82,4 +86,4 @@ function Balloon({ id, effect, status, battery, updateSingleBalloon }) {
     )
 }
 
-export default Balloon
+export default memo(Balloon)

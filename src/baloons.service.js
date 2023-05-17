@@ -1,12 +1,12 @@
 
 import axios from 'axios';
-import { balloons } from './assets/mock';
+import { getBalloons, setBalloons } from './assets/mock';
 
 export async function getBalloonsInfo() {
     // const url = `${import.meta.env.VITE_BACKEND_URL}/balloons`
 
     // const { data } = await axios.get(url)
-    return balloons
+    return getBalloons()
 }
 
 export async function updateBaloonEffect(id, effect) {
@@ -16,12 +16,17 @@ export async function updateBaloonEffect(id, effect) {
     // 'Content-Type': 'text/plain'
     // }
     // })
-    balloons.forEach((b) => {
-        if (b.id == id) {
-            b.effect = parseInt(effect)
-        }
-    })
-    return balloons
+    console.log(getBalloonsInfo())
+
+    setBalloons(
+        getBalloons().map((b) => {
+            if (b.id == id) {
+                return { ...b, effect: parseInt(effect) }
+            }
+            return b
+        })
+    )
+    return getBalloons()
 }
 
 
@@ -32,9 +37,10 @@ export async function updateAllBaloonsEffect(effect) {
     // 'Content-Type': 'text/plain'
     // }
     // })
-    balloons.forEach((b) => {
-        b.effect = parseInt(effect)
-
-    })
-    return balloons
+    setBalloons(
+        getBalloons().map((b) => {
+            return { ...b, effect: parseInt(effect) }
+        })
+    )
+    return getBalloons()
 }

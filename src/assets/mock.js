@@ -3,8 +3,7 @@ export const BalloonStatus = {
     INACTIVE: 'INACTIVE',
 }
 
-
-export const balloons = [
+let balloons = [
     {
         id: 1,
         effect: 2,
@@ -31,8 +30,8 @@ export const balloons = [
     }
 ]
 
-// GET baloons
-// PUT baloons/{id}
-// 9
-// PUT baloons/all
-// 12
+export const getBalloons = () => balloons
+
+export const setBalloons = (newBalloons) => {
+    balloons = newBalloons
+}
