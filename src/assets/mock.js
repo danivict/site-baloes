@@ -1,33 +1,33 @@
-export const BaloonStatus = {
+export const BalloonStatus = {
     ACTIVE: 'ACTIVE',
     INACTIVE: 'INACTIVE',
 }
 
 
-export const baloons = [
+export const balloons = [
     {
         id: 1,
-        effect: 1,
+        effect: 2,
         battery: 50, //0-100%
-        status: BaloonStatus.ACTIVE
+        status: BalloonStatus.ACTIVE
     },
     {
         id: 2,
         effect: 2,
         battery: 50, //0-100%
-        status: BaloonStatus.ACTIVE
+        status: BalloonStatus.ACTIVE
     },
     {
         id: 3,
-        effect: 3,
+        effect: 2,
         battery: 50, //0-100%
-        status: BaloonStatus.ACTIVE
+        status: BalloonStatus.ACTIVE
     },
     {
         id: 4,
-        effect: 4,
+        effect: 2,
         battery: 20, //0-100%
-        status: BaloonStatus.ACTIVE
+        status: BalloonStatus.ACTIVE
     }
 ]
 

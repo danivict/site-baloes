@@ -1,28 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
-import {IconContext} from 'react-icons'
-import {BsBalloon} from 'react-icons/bs'
-import ballon from './assets/ballon.svg'
+import { IconContext } from 'react-icons'
 import close from './assets/close.svg'
+import Balloon from './components/Balloon'
 import menuHamburger from './assets/menu_hamburger.svg'
 import { dynamicsEffects, staticEffects, staticEffectsNames } from './effects';
-import { getBalloonEffect, getBalloonQuantity, updateBaloonEffect } from './baloons.service';
+import { getBalloonsInfo, updateBaloonEffect, updateAllBaloonsEffect } from './baloons.service';
 
-function Ballon({ id, color }) {
-  return (
-    <div className='flex flex-col justify-center items-center cursor-pointer p-6 transition rounded-md border border-transparent 
-    hover:shadow-lg'>
-      <div className='relative flex flex-col justify-center items-center'>
-        <p className='mb-4'>{id}</p>
-        <IconContext.Provider value={{ color: color, size: "5rem", className: `global-class-name drop-shadow-[0_0px_10px_${color}]` }}>
-          <div>
-            <BsBalloon/>
-          </div>
-        </IconContext.Provider>
-      </div>
-      <p className='mt-4'>Status </p>
-    </div>
-  )
-}
 function Spinner() {
   return (
     <div className="loader"></div>
@@ -31,28 +14,31 @@ function Spinner() {
 
 function App() {
   const [isActive, setIsActive] = useState(false);
-  const [baloonQuantity, setBaloonQuantity] = useState(4);
-  const [baloonEffect, setBaloonEffect] = useState(1);
+  const [balloons, setBalloons] = useState([]);
 
+  const [baloonEffectSelect, setBaloonEffectSelect] = useState(1);
   useEffect(() => {
     const aux = async () => {
-      setBaloonQuantity(await getBalloonQuantity());
-      setBaloonEffect(await getBalloonEffect());
+      setBalloons(await getBalloonsInfo())
+      //setBaloonQuantity(await getBalloonQuantity());
     }
     aux();
   }, []);
 
+  const updateSingleBalloonEffectOnAPI = useCallback(async (id, effect) => {
+    console.log(`Atualizando balao ${id} para efeito ${effect}`)
+    const updatedBalloons = await updateBaloonEffect(id, effect);
+    console.log(updatedBalloons)
+    setBalloons(updatedBalloons);
+  }, [setBalloons]);
 
-  const udpateBaloonEffectOnAPI = useCallback(async (effect) => {
-    console.log("Enviando: "+ effect)
-    await updateBaloonEffect(effect);
-    await new Promise((resolve) => {
-      setTimeout(() => {
-        resolve()
-      }, 500)
-    });
-    setBaloonEffect(await getBalloonEffect());
-  }, [setBaloonEffect]);
+  const udpateBaloonEffectOnAPI = async () => {
+    console.log("Enviando: " + baloonEffectSelect)
+    const updatedBalloons = await updateAllBaloonsEffect(baloonEffectSelect);
+    console.log(updatedBalloons)
+
+    setBalloons(updatedBalloons);
+  };
 
   function handleClickToggleMenu() {
     setIsActive(!isActive);
@@ -66,9 +52,9 @@ function App() {
         <div onClick={handleClickToggleMenu} className={`${isActive ? null : 'hidden'} transition sm:hidden fixed right-10 top-10 cursor-pointer invert z-10`}><img src={close} /></div>
         <div className='col-span-2 flex flex-col  gap-10 justify-center items-center'>
           <h1 className='text-3xl max-xs:py-10'>Balões</h1>
-          <div className='flex flex-wrap justify-center items-center gap-10'> 
+          <div className='flex flex-wrap justify-center items-center gap-10'>
             {
-              baloonQuantity ? Array(baloonQuantity).fill(true).map((_, i) => <Ballon key={i} id={i + 1} color={ staticEffectsNames[baloonEffect.toString()] } />) : <Spinner />
+              balloons.map(x => <Balloon key={x['id']} id={x['id']} effect={x.effect} status={x['status']} battery={x['battery']} updateSingleBalloon={updateSingleBalloonEffectOnAPI} />)
             }
           </div>
         </div>
@@ -79,10 +65,11 @@ function App() {
           <form action="" //Menu de seleção de efeito baloonEffect.toString()
             className='flex flex-col justify-center items-center'>
             <div className='mt-6 px-6 max-sm:mt-28'>
-              <label htmlFor="cars" className='text-white'>Escolha um efeito: </label>
-              <select className='bg-white' id="cars" value={baloonEffect || "1"}
+              <p className='text-white'>Todos os balões:</p>
+              <label htmlFor="" className='text-white'>Escolha um efeito: </label>
+              <select className='bg-white' id="" value={baloonEffectSelect || "1"}
                 onChange={(e) => {
-                  setBaloonEffect(e.target.value)
+                  setBaloonEffectSelect(e.target.value);
                 }}
               >
                 <optgroup label="Estático" >
@@ -100,7 +87,7 @@ function App() {
             <div>
               <button type='submit' onClick={(e) => {
                 e.preventDefault();
-                udpateBaloonEffectOnAPI(baloonEffect);
+                udpateBaloonEffectOnAPI();
               }}
                 className='bg-white px-2 py-1 mt-4 rounded'>Salvar</button>
             </div>
