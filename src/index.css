@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+    html {
+        font-family: 'Inter', system-ui, sans-serif;
+    }
+}
+
 /*talvez mudar esse spinner de lugar?*/
 
 @keyframes spin {
@@ -12,6 +18,10 @@
     100% {
         transform: rotate(360deg);
     }
+}
+
+body {
+    background-color: #EAEAEA;
 }
 
 .loader {
