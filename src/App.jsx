@@ -3,7 +3,7 @@ import { IconContext } from 'react-icons'
 import close from './assets/close.svg'
 import Balloon from './components/Balloon'
 import { BsBalloon } from 'react-icons/bs'
-
+import ifpbIcon from './assets/ifpbIcon.png'
 import menuHamburger from './assets/menu_hamburger.svg'
 import { dynamicsEffects, staticEffects, staticEffectsNames } from './effects';
 import { getBalloonsInfo, updateBaloonEffect, updateAllBaloonsEffect } from './baloons.service';
@@ -81,7 +81,7 @@ function App() {
             <button type='submit' className='text-base text-white font-medium bg-green-700 py-2 px-3 mt-7 rounded-md self-end max-sm:w-full'>Adicionar</button>
           </div>
           {/* Fake div para o divider */}
-          <div className=" flex flex-col rounded-3xl justify-center divide-x-[1px] divide-slate-500 h-full bg-no-repeat bg-cover bg-[top_left_8rem] mix-blend-color-dodge bg-[url('assets/bg-balloons.png')] max-xl:sr-only">
+          <div className=" flex relative flex-col rounded-3xl justify-center divide-x-[1px] divide-slate-500 h-full bg-no-repeat bg-cover bg-[top_left_8rem] mix-blend-color-dodge bg-[url('assets/bg-balloons.png')] max-xl:sr-only">
             <div className='text-transparent '></div>
             <div className='text-transparent h-48'></div>
           </div>

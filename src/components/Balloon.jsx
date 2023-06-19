@@ -1,4 +1,4 @@
-import { BsBalloon } from 'react-icons/bs'
+import { BsBalloon, BsWifi, BsWifi1, BsWifi2, BsWifiOff } from 'react-icons/bs'
 import { IconContext } from 'react-icons'
 import Modal from 'react-modal'
 import close from '../assets/close.svg'
@@ -7,10 +7,12 @@ import { dynamicsEffects, staticEffects, staticEffectsNames } from '../effects';
 import { memo } from 'react';
 Modal.setAppElement("body")
 
-function Balloon({ id, effect, status, battery, updateSingleBalloon }) {
+function Balloon({ id, effect, status, battery, signal, updateSingleBalloon }) {
     const [toggleModal, setToggleModal] = useState(false);
 
     const [baloonEffectSelect, setBaloonEffectSelect] = useState(effect);
+
+    signal = 1; // somente para testar a intensidade do sinal - linha 42
 
     function handleClickToggleModal() {
         setToggleModal(!toggleModal);
@@ -36,6 +38,8 @@ function Balloon({ id, effect, status, battery, updateSingleBalloon }) {
                             <p className='text-xl'>Status: <span className='font-semibold'>{status}</span></p>
                             <p className='text-xl'>Efeito Atual: <span className='font-semibold'>{staticEffects[effect]}</span></p>
                             <p className='text-xl'>Bateria: <span className='font-semibold'>{battery + '%'}</span></p>
+                            {/* <BsWifi color='green' /> */}
+                            <p className='text-xl'>Intensidade do Sinal: <span className='font-semibold inline-block drop-shadow-2xl'>{signal >= 3 ? <BsWifi color='green' /> : signal === 2 ? <BsWifi2 color='gold' /> : signal === 1 ? <BsWifi1 color='red' /> : <BsWifiOff color='black' />}</span></p>
                             <div>
                                 <label htmlFor="" className='text-xl'>Escolha um efeito: </label>
                                 <select className='bg-zinc-300 rounded border p-1 text-xl shadow' id="" value={baloonEffectSelect || "1"}
