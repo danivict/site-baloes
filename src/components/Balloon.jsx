@@ -12,7 +12,7 @@ function Balloon({ id, effect, status, battery, signal, updateSingleBalloon }) {
 
     const [baloonEffectSelect, setBaloonEffectSelect] = useState(effect);
 
-    signal = 1; // somente para testar a intensidade do sinal - linha 42
+    signal = 0; // somente para testar a intensidade do sinal - linha 42
 
     function handleClickToggleModal() {
         setToggleModal(!toggleModal);
@@ -39,7 +39,7 @@ function Balloon({ id, effect, status, battery, signal, updateSingleBalloon }) {
                             <p className='text-xl'>Efeito Atual: <span className='font-semibold'>{staticEffects[effect]}</span></p>
                             <p className='text-xl'>Bateria: <span className='font-semibold'>{battery + '%'}</span></p>
                             {/* <BsWifi color='green' /> */}
-                            <p className='text-xl'>Intensidade do Sinal: <span className='font-semibold inline-block drop-shadow-2xl'>{signal >= 3 ? <BsWifi color='green' /> : signal === 2 ? <BsWifi2 color='gold' /> : signal === 1 ? <BsWifi1 color='red' /> : <BsWifiOff color='black' />}</span></p>
+                            <p className='text-xl'>Intensidade do Sinal: <span className='font-semibold inline-block drop-shadow-2xl'>{signal <= 0 && signal > -33 ? <BsWifi color='green' /> : signal < -33 && signal > -66 ? <BsWifi2 color='gold' /> : signal < -66 ? <BsWifi1 color='red' /> : <BsWifiOff color='black' />}</span></p>
                             <div>
                                 <label htmlFor="" className='text-xl'>Escolha um efeito: </label>
                                 <select className='bg-zinc-300 rounded border p-1 text-xl shadow' id="" value={baloonEffectSelect || "1"}
