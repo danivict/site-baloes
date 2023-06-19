@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { getBalloons, setBalloons } from './assets/mock';
 
-const baseUrl = "192.168.34.120:8000";
+const baseUrl = "http://192.168.34.120:8000";
 export async function getBalloonsInfo() {
     const url = `${baseUrl}/balloons`
 
@@ -17,22 +17,12 @@ export async function updateBaloonEffect(id, effect) {
             'Content-Type': 'application/json'
         }
     })
-    // console.log(getBalloonsInfo())
-
-    // setBalloons(
-    //     getBalloons().map((b) => {
-    //         if (b.id == id) {
-    //             return { ...b, effect: parseInt(effect) }
-    //         }
-    //         return b
-    //     })
-    // )
     return getBalloonsInfo()
 }
 
 
 export async function updateAllBaloonsEffect(effect) {
-    const url = `${baseUrl}/balloons/effect`
+    const url = `${baseUrl}/balloons/effect/all`
     await axios.put(url, { effect }, {
         headers: {
             'Content-Type': 'application/json'
