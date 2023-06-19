@@ -29,6 +29,14 @@ function App() {
     aux();
   }, []);
 
+
+  useEffect(()=> {
+    const interval = setInterval( async ()=>{
+      setBalloons(await getBalloonsInfo())
+    }, 5000)
+    return () => clearInterval(interval)
+  }, []);
+
   const updateSingleBalloonEffectOnAPI = useCallback(async (id, effect) => {
     console.log(`Atualizando balao ${id} para efeito ${effect}`)
     const updatedBalloons = await updateBaloonEffect(id, effect);
@@ -49,11 +57,6 @@ function App() {
 
   return (
     <>
-      {/* <code style={{ whiteSpace: "pre-wrap" }}>
-        {
-          JSON.stringify({balloons, baloonEffectSelect}, null, 2)
-        }
-      </code> */}
       <div className='firework'></div>
       <div className='firework'></div>
       <div className='firework'></div>
