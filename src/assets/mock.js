@@ -5,28 +5,32 @@ export const BalloonStatus = {
 
 let balloons = [
     {
-        id: 1,
+        id: '00-B0-D0-63-C2-26',
         effect: 2,
         battery: 50, //0-100%
-        status: BalloonStatus.ACTIVE
+        status: BalloonStatus.ACTIVE,
+        signal: -50
     },
     {
-        id: 2,
+        id: '00-B0-D0-63-C2-26',
         effect: 2,
         battery: 50, //0-100%
-        status: BalloonStatus.ACTIVE
+        status: BalloonStatus.ACTIVE,
+        signal: -50
     },
     {
-        id: 3,
+        id: '00-B0-D0-63-C2-26',
         effect: 2,
         battery: 50, //0-100%
-        status: BalloonStatus.ACTIVE
+        status: BalloonStatus.ACTIVE,
+        signal: -50
     },
     {
-        id: 4,
+        id: '00-B0-D0-63-C2-26',
         effect: 2,
         battery: 20, //0-100%
-        status: BalloonStatus.ACTIVE
+        status: BalloonStatus.ACTIVE,
+        signal: -50
     }
 ]
 

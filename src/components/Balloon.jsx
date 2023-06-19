@@ -85,7 +85,7 @@ function Balloon({ id, effect, status, battery, updateSingleBalloon }) {
                     </IconContext.Provider>
                 </div>
                 <div className='flex flex-col gap-1 pt-8 text-lg'>
-                    <p>Nome: <span className='font-semibold'>Balão {id}</span></p>
+                    <p>Nome: <span className='font-semibold'>{id}</span></p>
                     <p>Status: <span className='font-semibold'>{status}</span></p>
                 </div>
             </div>

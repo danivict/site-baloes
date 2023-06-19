@@ -13,7 +13,7 @@ export const staticEffects = {
 };
 
 export const staticEffectsNames = {
-    "11": "black",
+    "11": "gray",
     "1": "red",
     "2": "green",
     "3": "blue",
