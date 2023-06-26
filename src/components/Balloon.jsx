@@ -20,7 +20,7 @@ function Balloon({ id, effect, status, battery, signal, updateSingleBalloon }) {
 
     return (
         <>
-            <Modal className={`absolute divide-x-2 p-8 gap-2 top-10 right-1/2 left-auto bottom-auto translate-x-1/2 translate-y-1/2 rounded-xl shadow-xl border-2 border
+            <Modal className={`absolute p-8 right-1/2 left-auto translate-x-1/2 translate-y-1/3 rounded-xl shadow-xl border-2 border
             bg-white flex flex-row`} isOpen={toggleModal}>
                 <div className='flex items-center justify-center'>
                     <IconContext.Provider value={{ color: staticEffectsNames[baloonEffectSelect], size: "10rem", className: `global-class-name drop-shadow-[0_0px_10px_${staticEffectsNames[baloonEffectSelect]}]` }}>
