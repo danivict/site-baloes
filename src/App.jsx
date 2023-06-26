@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
-import { IconContext } from 'react-icons'
-import close from './assets/close.svg'
 import Balloon from './components/Balloon'
+import close from './assets/close.svg'
 import { BsBalloon } from 'react-icons/bs'
-import ifpbIcon from './assets/ifpbIcon.png'
-import menuHamburger from './assets/menu_hamburger.svg'
 import { dynamicsEffects, staticEffects, staticEffectsNames } from './effects';
 import { getBalloonsInfo, updateBaloonEffect, updateAllBaloonsEffect } from './baloons.service';
+import Modal from 'react-modal'
+Modal.setAppElement("body")
+
 
 function Spinner() {
   return (
@@ -15,10 +15,24 @@ function Spinner() {
 }
 
 function App() {
-  const [isActive, setIsActive] = useState(false);
   const [baloonEffectSelect, setBaloonEffectSelect] = useState(1);
 
   const [balloons, setBalloons] = useState([]);
+
+  const [inputList, setInputList] = useState([]);
+
+  const [toggleModal, setToggleModal] = useState(false);
+
+
+
+
+  function onAddBtnClick(e) {
+    setInputList(inputList.concat(<Balloon battery={1} effect={1} id={1} signal={1} status={1} updateSingleBalloon={updateSingleBalloonEffectOnAPI} />));
+  };
+
+  function handleClickToggleModal() {
+    setToggleModal(!toggleModal);
+  }
 
 
   useEffect(() => {
@@ -30,8 +44,8 @@ function App() {
   }, []);
 
 
-  useEffect(()=> {
-    const interval = setInterval( async ()=>{
+  useEffect(() => {
+    const interval = setInterval(async () => {
       setBalloons(await getBalloonsInfo())
     }, 5000)
     return () => clearInterval(interval)
@@ -51,20 +65,27 @@ function App() {
     setBalloons(updatedBalloons);
   }, [baloonEffectSelect]);
 
-  function handleClickToggleMenu() {
-    setIsActive(!isActive);
-  }
-
   return (
     <>
+      <Modal className={`absolute divide-x-2 p-8 gap-2 top-10 right-1/2 left-auto bottom-auto translate-x-1/2 translate-y-1/2 rounded-xl shadow-xl border-2 border
+            bg-white flex flex-row`} isOpen={toggleModal}>
+        <img className='absolute -top-3 -right-3 w-10 border border-slate-300 bg-slate-200 p-2 rounded-full
+                cursor-pointer' onClick={handleClickToggleModal} src={close} />
+        {
+          balloons.map(x =>
+            <Balloon key={x['id']} id={x['id']} effect={x.effect} status={x['status']} battery={x['battery']} updateSingleBalloon={updateSingleBalloonEffectOnAPI} />
+          )
+        }
+      </Modal>
+
       <div className='firework'></div>
       <div className='firework'></div>
       <div className='firework'></div>
       <div className="grid grid-rows-[30rem_minmax(0px,_1fr)_100px] transition mx-28">
         <form action="" //Menu de seleção de efeito baloonEffect.toString()
-          className={`grid grid-cols-2  justify-center items-center ${isActive ? 'max-sm:-right-px' : ''} max-xl:grid-cols-1 max-xl:bg-[url('assets/bg-balloons.png')] max-xl:bg-blend-color-dodge rounded-3xl mt-10 h-3/4	bg-zinc-900  transition-all`} onSubmit={updateAllBalloonsEffectOnAPI}>
+          className={`grid grid-cols-2  justify-center items-center max-xl:grid-cols-1 max-xl:bg-[url('assets/bg-balloons.png')] max-xl:bg-blend-color-dodge rounded-3xl mt-10 h-3/4	bg-zinc-900  transition-all`} onSubmit={updateAllBalloonsEffectOnAPI}>
           <div className='px-16 max-sm:px-6 flex flex-col'>
-            <label htmlFor="effects" className='text-white text-5xl max-sm:text-4xl max-xs:text-3xl max-sm:text-center font-medium leading-tight'>Adicione efeitos em todos os balões: </label>
+            <label htmlFor="effects" className='text-white text-5xl max-sm:text-4xl max-xs:text-3xl max-xxl:text-4xl max-sm:text-center font-medium leading-tight'>Adicione efeitos em todos os balões: </label>
             <select className='mt-8 rounded-md text-center py-3 bg-white text-base font-normal leading-5' id="" value={baloonEffectSelect || "1"}
               onChange={(e) => {
                 setBaloonEffectSelect(e.target.value);
@@ -93,13 +114,21 @@ function App() {
         {/* <div onClick={handleClickToggleMenu} className={`${isActive ? 'hidden' : null} transition sm:hidden fixed right-10 top-10 cursor-pointer z-10`}><img src={menuHamburger} /></div>
         <div onClick={handleClickToggleMenu} className={`${isActive ? null : 'hidden'} transition sm:hidden fixed right-10 top-10 cursor-pointer invert z-10`}><img src={close} /></div> */}
         <div className='flex flex-col gap-10 justify-center items-center'>
-          <h1 className='flex justify-center items-center gap-2 text-4xl text-gray-800 font-semibold max-sm:text-center'><BsBalloon className='max-sm:text-7xl' />Balões Cadastrados</h1>
+          <div className='flex flex-col items-center'>
+            <h1 className='flex justify-center items-center gap-2 text-4xl text-gray-800 font-semibold max-sm:text-center'><BsBalloon className='max-sm:text-7xl' />Balões Cadastrados
+            </h1>
+            <p className='text-red-500 cursor-default' title='Quantidade de balões que atualmente estão conectados na rede'>Balões conectados: <span className='font-semibold'>{balloons.length}</span></p>
+          </div>
+          <div className='text-white rounded-md transition p-5 bg-green-700 hover:brightness-110 select-none active:brightness-95 leading-3 cursor-pointer'
+            onClick={handleClickToggleModal} title='Clique para adicionar balões que estão conectados na rede'>
+            + Cadastrar Balão
+          </div>
           <div className='flex flex-wrap justify-center items-center gap-10'>
             {
-              balloons.map(x =>
-                <Balloon key={x['id']} id={x['id']} effect={x.effect} status={x['status']} battery={x['battery']} updateSingleBalloon={updateSingleBalloonEffectOnAPI} />
-              )
+
             }
+
+            {inputList}
           </div>
         </div>
       </div>

@@ -4,9 +4,10 @@ import { getBalloons, setBalloons } from './assets/mock';
 
 const baseUrl = "http://192.168.34.120:8000";
 export async function getBalloonsInfo() {
-    const url = `${baseUrl}/balloons`
+    // const url = `${baseUrl}/balloons`
 
-    const { data } = await axios.get(url)
+    // const { data } = await axios.get(url)
+    const data = getBalloons();
     return data;
 }
 
