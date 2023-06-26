@@ -24,7 +24,7 @@ function Balloon({ id, effect, status, battery, signal, updateSingleBalloon }) {
             <Modal className={`absolute divide-x-2 p-8 gap-2 top-10 right-1/2 left-auto bottom-auto translate-x-1/2 translate-y-1/2 rounded-xl shadow-xl border-2 border
             bg-white flex flex-row`} isOpen={toggleModal}>
                 <div className='flex items-center justify-center'>
-                    <IconContext.Provider value={{ color: staticEffectsNames[baloonEffectSelect], size: "10rem", className: `global-class-name drop-shadow-[0_0px_10px_${staticEffectsNames[baloonEffectSelect]}]` }}>
+                    <IconContext.Provider value={{ color: staticEffectsNames[effect], size: "10rem", className: `${staticEffectsNames[effect]}` }}>
                         <div>
                             <BsBalloon />
                         </div>
@@ -81,7 +81,7 @@ function Balloon({ id, effect, status, battery, signal, updateSingleBalloon }) {
 
 
             <div onClick={handleClickToggleModal}
-                title={`MAC: ${id}\nStatus: ${status === 0 ? BalloonStatus.INACTIVE : BalloonStatus.ACTIVE}\nEfeito: ${staticEffects[effect]}\nBateria: ${battery}\nIntensidade do sinal: ${signal + 100}%`}
+                title={`MAC: ${id}\nStatus: ${status === 0 ? BalloonStatus.INACTIVE : BalloonStatus.ACTIVE}\nEfeito: ${staticEffects[effect]}\nBateria: ${battery}%\nIntensidade do sinal: ${signal + 100}%`}
                 className='flex flex-col justify-center items-center p-12 cursor-pointer transition bg-white rounded-lg shadow-[3.5px_1.7px_2.9px_rgba(0,0,0,0.25)] divide-y-2'>
                 <div className='relative p-6 flex flex-col justify-center items-center'>
                     {/* <p className='mb-4'>{id}</p> */}
