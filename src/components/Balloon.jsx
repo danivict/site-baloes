@@ -5,6 +5,7 @@ import close from '../assets/close.svg'
 import { useCallback, useEffect, useState } from 'react'
 import { dynamicsEffects, staticEffects, staticEffectsNames } from '../effects';
 import { memo } from 'react';
+import { BalloonStatus } from '../assets/mock'
 Modal.setAppElement("body")
 
 function Balloon({ id, effect, status, battery, signal, updateSingleBalloon }) {
@@ -79,18 +80,20 @@ function Balloon({ id, effect, status, battery, signal, updateSingleBalloon }) {
 
 
 
-            <div onClick={handleClickToggleModal} className='flex flex-col justify-center items-center p-12 cursor-pointer transition bg-white rounded-lg shadow-[3.5px_1.7px_2.9px_rgba(0,0,0,0.25)] divide-y-2'>
+            <div onClick={handleClickToggleModal}
+                title={`MAC: ${id}\nStatus: ${status === 0 ? BalloonStatus.INACTIVE : BalloonStatus.ACTIVE}\nEfeito: ${staticEffects[effect]}\nBateria: ${battery}\nIntensidade do sinal: ${signal + 100}%`}
+                className='flex flex-col justify-center items-center p-12 cursor-pointer transition bg-white rounded-lg shadow-[3.5px_1.7px_2.9px_rgba(0,0,0,0.25)] divide-y-2'>
                 <div className='relative p-6 flex flex-col justify-center items-center'>
                     {/* <p className='mb-4'>{id}</p> */}
-                    <IconContext.Provider value={{ color: staticEffectsNames[effect], size: "8rem", className: 'global-class-name' }}>
+                    <IconContext.Provider value={{ color: staticEffectsNames[effect], size: "8rem", className: `${staticEffectsNames[effect]}` }}>
                         <div>
                             <BsBalloon />
                         </div>
                     </IconContext.Provider>
                 </div>
                 <div className='flex flex-col gap-1 pt-8 text-lg'>
-                    <p>Nome: <span className='font-semibold'>{id}</span></p>
-                    <p>Status: <span className='font-semibold'>{status}</span></p>
+                    <p>MAC: <span className='font-semibold'>{id}</span></p>
+                    <p>Status: <span className='font-semibold'>{status === 0 ? BalloonStatus.INACTIVE : BalloonStatus.ACTIVE}</span></p>
                 </div>
             </div>
         </>

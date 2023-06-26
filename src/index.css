@@ -20,6 +20,213 @@
     }
 }
 
+@keyframes blink-pulse-stand-by {
+    0% {
+        opacity: 1;
+
+    }
+
+    50% {
+        opacity: 0;
+        color: gold;
+        filter: blur(10px);
+
+
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.blink-pulse-stand-by {
+    animation: blink-pulse-stand-by 0.5s infinite;
+
+}
+
+@keyframes blink-fade-stand-by {
+    0% {
+        opacity: 1;
+
+    }
+
+    50% {
+        opacity: 0;
+        filter: blur(10px);
+
+
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.blink-fade-stand-by {
+    animation: blink-fade-stand-by 3s infinite;
+
+}
+
+@keyframes blink-flashes {
+    0% {
+        opacity: 1;
+        color: gold;
+
+    }
+
+    50% {
+        opacity: 0;
+        color: gold;
+        filter: blur(10px);
+
+
+    }
+
+    100% {
+        opacity: 1;
+        color: gold;
+    }
+}
+
+.blink-flashes {
+    animation: blink-flashes 1s infinite;
+
+}
+
+@keyframes blink-random {
+    0% {
+        opacity: 1;
+        color: dodgerblue;
+
+    }
+
+    50% {
+        opacity: 1;
+        color: rgb(255, 251, 0);
+
+    }
+
+    100% {
+        opacity: 1;
+        color: rgb(47, 255, 57);
+
+    }
+}
+
+.blink-random {
+    animation: blink-random 0.5s infinite;
+
+}
+
+@keyframes blink-cold {
+    0% {
+        opacity: 1;
+        color: dodgerblue;
+
+    }
+
+    50% {
+        opacity: 0;
+        color: dodgerblue;
+
+    }
+
+    100% {
+        opacity: 1;
+        color: dodgerblue;
+
+    }
+}
+
+.blink-cold {
+    animation: blink-cold 2s infinite;
+
+}
+
+@keyframes blink-hot {
+    0% {
+        opacity: 1;
+        color: yellow;
+
+    }
+
+    50% {
+        opacity: 0;
+        color: yellow;
+
+    }
+
+    100% {
+        opacity: 1;
+        color: yellow;
+
+    }
+}
+
+.blink-hot {
+    animation: blink-hot 1s infinite;
+}
+
+@keyframes blink-rain {
+    0% {
+        opacity: 1;
+        color: deepskyblue;
+
+    }
+
+    50% {
+        opacity: 0;
+        color: deepskyblue;
+
+    }
+
+    100% {
+        opacity: 1;
+        color: deepskyblue;
+
+    }
+}
+
+.blink-rain {
+    animation: blink-rain 1s infinite;
+
+}
+
+@keyframes blink-fire {
+    0% {
+        opacity: 0.8;
+        color: orange;
+
+    }
+
+    25% {
+        opacity: 0.5;
+
+    }
+
+    50% {
+        opacity: 1;
+        color: orange;
+
+    }
+
+    75% {
+        opacity: 0.5;
+
+    }
+
+    100% {
+        opacity: 0.8;
+        color: orange;
+
+    }
+}
+
+.blink-fire {
+    animation: blink-fire 1s linear infinite;
+
+}
+
 *:focus {
     outline: none;
     box-shadow: none;
